@@ -5,43 +5,83 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>UGD </title>
         <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <script src="vue.js"></script>
     </head>
     <body>
         <div id="app">
-            Tebak angka 1-10: <input type="number" v-model="userInput">
-            <b>{{ message }}</b>
-            
+            <div class="d-flex justify-content-center">
+                <div class="card border-primary my-5">
+                    <div class="card-header">Tebaklah angka dari 1-10 </div>
+                    <div class="card-body text-primary">
+                        <input type="number" class="form-control" v-model="userInput" :disabled="isDisabled" placeholder="tebak angkanya...."/>
+                        <br>
+                        <button class="btn btn-primary btn-sm" @click="tebak" :disabled="isDisabled">Tebak</button>
+                        <br>
+                        Kesempatan : {{ kesempatan }}
+                    </div>
+                </div>
+            </div>
+            <div class="text-center" v-show="benar">
+                <p>Selamat anda berhasil menebak!</p> 
+                <button class="btn btn-primary" @click="playAgain" >Main lagi</button>
+            </div>
+            <div class="text-center" v-show="kalah">
+                <p>Game Over, anda kalah! </p> 
+                <button class="btn btn-primary" @click="playAgain" >Main lagi</button>
+            </div>
+            <div class="text-center" v-show="salah">
+                <p>Anda masih punya kesempatan menebak </p> 
+                <button class="btn btn-warning" @click="tryAgain" >Coba lagi</button>
+            </div>
+            <div>
+                <footer class="footer">
+                    {{ `${mhs.nama} | ${mhs.npm} | ${mhs.kelas}` }}
+                </footer>
+            </div>
         </div>
-        <div class="footer">
-            <p>{{ mhs.nama}} | {{mhs.npm}} | {{mhs.kelas}} </p>
-        </div>
-
     </body>
     <script>
         new Vue({
-            el: '#app',
+            el: "#app",
             data: {
-                userInput: 0,
-                randomNumber: 5
-                
+                angka: Math.floor(Math.random() * 10)+1,
+                userInput:0,
+                kesempatan:3,
+                salah:undefined,
+                benar:undefined,
+                kalah:undefined,
+                isDisabled:false,
+                mhs: {
+                    nama:'Peter Satria',
+                    npm: '180710018',
+                    kelas: 'B',
+                },
             },
             methods: {
-                getRandomNumber: function(min, max){
-                return Math.floor(Math.random() * (max - min + 1)) + min;
-                }
+               tebak(){
+                console.log(this.angka);
+                if(this.userInput == this.angka){
+                    this.benar = 1;
+                }else {
+                        this.salah =1;
+                        this.isDisabled = true;
+                        this.kesempatan--;
+                        if(this.kesempatan==0){
+                            this.kalah=1;
+                            this.salah = undefined;
+                        }
+                }  
+               },
+               tryAgain(){
+                    this.isDisabled = false;
+                    this.salah = undefined;
+               },
+               playAgain(){
+                   location.reload();
+               }
             },
-            computed: {
-                message: function(){
-                if (this.userInput == this.randomNumber) {
-                    this.randomNumber = this.getRandomNumber(1, 10);
-                    return 'Selamat anda benar!';
-                } else {
-                    this.randomNumber = this.getRandomNumber(1, 10);
-                    return 'Coba lagi!';
-                    }
-                }
-            }
+    
         });
     </script>
 </html>

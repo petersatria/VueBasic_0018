@@ -4,13 +4,6 @@ html, body {
     padding: 25px;
     background-color: #ffeead;
   }
-  
-  #app {
-    display: flex;
-    height: 100%;
-    align-items: center;
-    justify-content: center;
-  }
 
 .footer {
     position: fixed;

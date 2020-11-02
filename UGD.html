@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>UGD </title>
+        <link rel="stylesheet" href="style.css">
+        <script src="vue.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            Tebak angka 1-10: <input type="number" v-model="userInput">
+            <b>{{ message }}</b>
+            
+        </div>
+        <div class="footer">
+            <p>{{ mhs.nama}} | {{mhs.npm}} | {{mhs.kelas}} </p>
+        </div>
+
+    </body>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                userInput: 0,
+                randomNumber: 5
+                mhs:{
+                    nama: 'Peter Satria',
+                    npm: '180710018',
+                    kelas: 'B',
+                }
+            },
+            methods: {
+                getRandomNumber: function(min, max){
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+                }
+            },
+            computed: {
+                message: function(){
+                if (this.userInput == this.randomNumber) {
+                    this.randomNumber = this.getRandomNumber(1, 10);
+                    return 'Selamat anda benar!';
+                } else {
+                    this.randomNumber = this.getRandomNumber(1, 10);
+                    return 'Coba lagi!';
+                    }
+                }
+            }
+        });
+    </script>
+</html>
